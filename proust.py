@@ -24,9 +24,12 @@ The filter is written to work with Python 2 or 3.
 from __future__ import division, print_function
 import fractions
 import itertools
-from math import sqrt, log, exp, sin, cos, tan, asin, acos, atan, hypot, \
-                 pi, e, ceil, floor, factorial, fabs, degrees, radians
 import re
+from math import sqrt, log, exp, sin, cos, tan, asin, acos, atan, hypot, comb, perm, \
+                 pi, e, ceil, floor, factorial, fabs, degrees, radians, gcd
+
+def lcm(a, b):
+    return abs(a*b)/gcd(a, b)
 
 def ifactors(n):
     "Iterate through the factors"
@@ -77,25 +80,16 @@ def tand(x):
     '''
     return sind(x)/cosd(x)
 
-def choose(n, k):
-    '''A fast way to calculate binomial coefficients by Andrew Dalke (contrib).
-
-    >>> choose(4,2)
-    6
-    >>> choose(2,4)
-    0
-    >>> choose(20,8)
-    125970
+def mlog(x):
+    '''Like MP
     '''
-    if 0 <= k <= n:
-        ntok = 1
-        ktok = 1
-        for t in range(1, min(k, n - k) + 1):
-            ntok *= n
-            ktok *= t
-            n -= 1
-        return ntok // ktok
-    return 0
+    return 256 * log(x)
+
+def mexp(x):
+    '''Also like MP
+    '''
+    return exp(x / 256)
+
 
 def workout(s):
     '''De-Texify the expression then call eval().
