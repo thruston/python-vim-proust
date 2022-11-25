@@ -20,12 +20,50 @@ to the command sequence to run this filter.
 """
 # pylint: disable=C0103
 
+import datetime
 import fractions
 import itertools
 import re
 from math import (acos, asin, atan, atan2, ceil, comb, cos, degrees, e, exp,
                   fabs, factorial, floor, gcd, hypot, log, perm, pi, radians,
                   sin, sqrt, tan)
+
+
+def dow(isodate=None):
+    '''Day of the week please
+
+    >>> w = 'Monday Tuesday Wednesday Thursday Friday Saturday Sunday'.split()
+    >>> dow() in w
+    True
+    >>> dow(1) in w
+    True
+    >>> dow('2022-12-25')
+    'Sunday'
+
+
+    '''
+    if isodate is None:
+        return datetime.date.today().strftime("%A")
+
+    try:
+        n = int(isodate)
+    except ValueError:
+        pass
+    else:
+        today = datetime.date.today()
+        diff = datetime.timedelta(days=n)
+        return (today + diff).strftime("%A")
+  
+    return datetime.datetime.strptime(isodate, "%Y-%m-%d").strftime("%A")
+
+
+def date(n=0):
+    ''' Today +/- n days
+    date(120) = 2023-03-25 
+    '''
+    today = datetime.date.today()
+    diff = datetime.timedelta(days=n)
+    return (today + diff).isoformat()
 
 
 def lcm(a, b):
@@ -286,6 +324,8 @@ def evaluate_expression(target):
             approx = float('%g' % answer)
             rel = '=' if fabs(answer - approx) < 1e-15 else '\\simeq'
             return f'{target} {rel} {approx:g}'
+        except TypeError:
+            return f'{target} = {answer}'
         except ValueError:
             return answer + '?'
 
