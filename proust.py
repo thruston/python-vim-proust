@@ -65,6 +65,16 @@ def date(n=0):
     diff = datetime.timedelta(days=n)
     return (today + diff).isoformat()
 
+def base(isodate=None):
+    '''
+    >>> base('2022-01-01')
+    738156
+    '''
+    if isodate is None:
+        return datetime.date.today().toordinal()
+    return datetime.datetime.strptime(str(isodate), "%Y-%m-%d").toordinal()
+
+
 
 def lcm(a, b):
     return abs(a * b) / gcd(a, b)
